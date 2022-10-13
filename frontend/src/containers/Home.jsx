@@ -1,10 +1,10 @@
 import React from 'react'
-import Body from '../components/Body'
+import Bodyhome from '../Components/Bodyhome'
 
 
 const Home = () => {
   return (
-    <Body/>
+    <Bodyhome/>
     
   )
 }

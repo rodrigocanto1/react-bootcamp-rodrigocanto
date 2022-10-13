@@ -1,10 +1,13 @@
 import React from 'react'
+import Bodycart from '../Components/Bodycart'
+import { CartProvider } from '../Context/CartContext'
 
 const Cart = () => {
   return (
-    <div>
-        <h1>ASD</h1>
-    </div>
+  <CartProvider>
+    <Bodycart/>
+  </CartProvider>
+  
   )
 }
 

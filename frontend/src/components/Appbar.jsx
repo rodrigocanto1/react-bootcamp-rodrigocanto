@@ -5,14 +5,14 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
-import SearchIcon from "@mui/icons-material/Search";
 import HomeSharpIcon from "@mui/icons-material/HomeSharp";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { CartContext } from "../Context/CartContext";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -52,7 +52,8 @@ export default function Appbar() {
   useEffect(() => {
     fetchApi();
   }, []);
-
+  
+  const { cartItems } = useContext(CartContext);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -76,10 +77,10 @@ export default function Appbar() {
           <IconButton
             size="large"
             edge="start"
-            aria-label="show 4 new mails"
+            aria-label="4"
             color="inherit"
           >
-            <Badge badgeContent={4} color="error">
+            <Badge badgeContent="4" color="error">
               <NavLink to="/cart">
                 <ShoppingCartIcon />
               </NavLink>
