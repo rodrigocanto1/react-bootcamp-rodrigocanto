@@ -1,18 +1,35 @@
-import React, { useEffect } from "react";
-import { useContext } from "react";
-import { useState } from "react";
+import React, { useEffect,useContext, useState, } from "react";
 import { CartContext } from "../Context/CartContext";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
-
 import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
-const Bodycart = ({ item }) => {
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const Bodycart = () => {
   const { deleteItemToCart } = useContext(CartContext);
-  const [productsLenght, setProductsLenght] = useState(0);
-  const id = { item };
   const { cartItems } = useContext(CartContext);
+  const [productsLenght, setProductsLenght] = useState(0);
+
+  const [open, setOpen] = useState(false);
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   useEffect(() => {
     setProductsLenght(
@@ -27,41 +44,76 @@ const Bodycart = ({ item }) => {
 
   return (
     <div>
-      {cartItems.lenght === 0 ? (
-        <p>Your cart is empty</p>
+      {productsLenght === 0 ? (
+        <Stack mb={2} justifyContent={"center"} alignItems={"center"}>
+          <Typography color={"blue"} variant="h4" component="h1">
+            Your cart its empty
+          </Typography>
+        </Stack>
       ) : (
         <div>
-          <h2>Your cart</h2>
+          <Stack mb={2} justifyContent={"center"} alignItems={"center"}>
+            <Typography variant="h4" component="h1">
+              Your cart
+            </Typography>
+          </Stack>
           {cartItems.map((item, i) => (
-            <Box key={i} sx={{ flexGrow: 1 }}>
+            <Box key={item.id} sx={{ flexGrow: 1 }}>
               <Grid
                 container
-                spacing={{ xs: 2, md: 3 }}
-                columns={{ xs: 4, sm: 8, md: 12 }}
+                mb={3}
+                direction={"row"}
+                justifyContent={"space-around"}
+                alignItems={"center"}
+                spacing={{ xs: "0.5", md: "5" }}
+                columns={{ xs: 1, sm: 8, md: 12 }}
               >
-                <Grid item xs={2} sm={4} md={4}>
+                <Typography variant="h9" component="p">
                   Product: {item.title}
-                </Grid>
-                <Grid item xs={2} sm={4} md={4}>
+                </Typography>
+                <Typography variant="h8" component="p">
                   Price ${item.price}
-                </Grid>
-                <Grid item xs={2} sm={4} md={4}>
-                  Remove
-                  <IconButton
-                    color="primary"
-                    aria-label="upload picture"
-                    component="label"
+                </Typography>
+                <Stack alignItems={"center"} justifyContent={"center"}>
+                  <Button
                     onClick={() => deleteItemToCart(item.id)}
+                    variant="outlined"
+                    size="small"
+                    startIcon={<DeleteIcon />}
                   >
-                    <DeleteIcon />
-                  </IconButton>
-                </Grid>
-              </Grid>
-              <Grid item xs={2} sm={4} md={4}>
-                Total ${total}
+                    <Typography variant="h9" component="p">
+                      Delete
+                    </Typography>
+                  </Button>
+                </Stack>
               </Grid>
             </Box>
           ))}
+          <Stack alignItems={"center"}>
+            <Grid item xs={2} sm={4} md={4}>
+              <Typography variant="h5" component="h4">
+                Total ${total}
+              </Typography>
+            </Grid>
+            <Stack spacing={2} sx={{ width: "10%" }}>
+              <Button variant="outlined" onClick={handleClick}>
+                Buy
+              </Button>
+              <Snackbar
+                open={open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity="success"
+                  sx={{ width: "100%" }}
+                >
+                  Thank you!
+                </Alert>
+              </Snackbar>
+            </Stack>
+          </Stack>
         </div>
       )}
     </div>

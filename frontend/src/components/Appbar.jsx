@@ -1,6 +1,5 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,81 +9,37 @@ import HomeSharpIcon from "@mui/icons-material/HomeSharp";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useEffect, useState, useContext } from "react";
-import { CartContext } from "../Context/CartContext";
-
-
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
+import { useGetMovies } from "../Hooks/useGetMovies";
+import { useNavigate } from "react-router-dom";
 
 export default function Appbar() {
-  const url = "http://localhost:3200/movies/";
-  const [movies, setMovies] = useState();
-  const fetchApi = async () => {
-    const response = await fetch(url);
-    const responseJSON = await response.json();
-    setMovies(responseJSON);
-  };
+  const { movies } = useGetMovies();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchApi();
-  }, []);
-  
-  const { cartItems } = useContext(CartContext);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton size="large" color="inherit">
+          <IconButton edge="start" size="large" color="inherit">
             <Badge color="error">
               <NavLink to="/">
                 <HomeSharpIcon />
               </NavLink>
             </Badge>
           </IconButton>
-
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            options={movies?.map((movie) => movie.title)}
+            options={movies}
+            getOptionLabel={(option) => option.title}
+            onChange={(event, value) => navigate(`/movie/${value.id}`)}
             sx={{ width: 300 }}
             renderInput={(params) => <TextField {...params} label="Movie" />}
           />
-
-          <IconButton
-            size="large"
-            edge="start"
-            aria-label="4"
-            color="inherit"
-          >
-            <Badge badgeContent="4" color="error">
-              <NavLink to="/cart">
-                <ShoppingCartIcon />
-              </NavLink>
-            </Badge>
+          <IconButton size="large" color="inherit">
+            <NavLink to="/cart">
+              <ShoppingCartIcon />
+            </NavLink>
           </IconButton>
         </Toolbar>
       </AppBar>
