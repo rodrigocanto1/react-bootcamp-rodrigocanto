@@ -11,10 +11,21 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useGetMovies } from "../Hooks/useGetMovies";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../Context/CartContext";
+import { useState, useContext, useEffect } from "react";
 
 export default function Appbar() {
   const { movies } = useGetMovies();
+  const [productsLenght, setProductsLenght] = useState(0);
+  const { cartItems } = useContext(CartContext);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setProductsLenght(
+      cartItems.reduce((previous, current) => previous + current.amount, 0)
+    );
+  }, [cartItems]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -36,10 +47,12 @@ export default function Appbar() {
             sx={{ width: 300 }}
             renderInput={(params) => <TextField {...params} label="Movie" />}
           />
-          <IconButton size="large" color="inherit">
-            <NavLink to="/cart">
-              <ShoppingCartIcon />
-            </NavLink>
+          <IconButton size="large" aria-label={productsLenght} color="inherit">
+            <Badge badgeContent={productsLenght} color="error">
+              <NavLink to="/cart">
+                <ShoppingCartIcon />
+              </NavLink>
+            </Badge>
           </IconButton>
         </Toolbar>
       </AppBar>

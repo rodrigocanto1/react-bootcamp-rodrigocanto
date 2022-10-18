@@ -44,7 +44,7 @@ export default function Body() {
         {filteredMovies()?.map((movie) => (
           <Grid item xs={4} sm={4} md={4} key={movie.id}>
             <CardActionArea onClick={() => navigate(`/movie/${movie.id}`)}>
-              {<CardMedia component="img" height="300" image={movie.img} />}
+              <CardMedia component="img" height="300" image={movie.img} />
               <CardHeader title={movie.title} subheader={movie.genres} />
               <CardContent>
                 {

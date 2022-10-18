@@ -1,4 +1,4 @@
-import React, { useEffect,useContext, useState, } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { CartContext } from "../Context/CartContext";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -92,7 +92,7 @@ const Bodycart = () => {
           <Stack alignItems={"center"}>
             <Grid item xs={2} sm={4} md={4}>
               <Typography variant="h5" component="h4">
-                Total ${total}
+                Quantity {productsLenght} Total ${total}
               </Typography>
             </Grid>
             <Stack spacing={2} sx={{ width: "10%" }}>

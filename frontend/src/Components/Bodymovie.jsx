@@ -22,7 +22,7 @@ const Bodymovie = () => {
    
    <Stack alignItems={'center'} justifyContent={'center'}>
    <Card key={movie.id} sx={{ maxWidth: 345, m: 2 }}>
-      {<CardMedia component="img" height="380" image={movie.img} />}
+      <CardMedia component="img" height="380" image={movie.img} />
       <CardHeader title={movie.title} subheader={movie.genres} />
       <CardContent>
         {
